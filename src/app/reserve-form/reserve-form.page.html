@@ -23,7 +23,8 @@
         <ion-label>Time From:</ion-label>
         <ion-select placeholder="Select" [(ngModel)]="timeFrom">
           <ion-select-option *ngFor="let time of timeSlots"
-                             [disabled]="!!timeTo && (time >= timeTo)">
+                             [disabled]="!!timeTo && (time >= timeTo)"
+                             [value]="time">
             {{time}}
           </ion-select-option>
         </ion-select>
