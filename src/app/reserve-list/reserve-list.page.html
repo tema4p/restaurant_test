@@ -13,9 +13,10 @@
       Filters
     </ion-label>
   </ion-item-divider>
+
   <ion-item>
     <ion-label>Seats:</ion-label>
-    <ion-select placeholder="Select" [(ngModel)]="filterSeats">
+    <ion-select placeholder="Select" [(ngModel)]="filterSeats" (ngModelChange)="filterTables()">
       <ion-select-option value="">All</ion-select-option>
       <ion-select-option value="2">2</ion-select-option>
       <ion-select-option value="4">4</ion-select-option>
@@ -26,15 +27,23 @@
 
   <ion-item>
     <ion-label>Time From:</ion-label>
-    <ion-select placeholder="Select" [(ngModel)]="filterFrom">
-      <ion-select-option *ngFor="let time of timeSlots" [value]="time">{{time}}</ion-select-option>
+    <ion-select placeholder="Select" [(ngModel)]="filterFrom" (ngModelChange)="filterTables()">
+      <ion-select-option *ngFor="let time of timeSlots"
+                         [disabled]="!!filterTo && (time >= filterTo)"
+                         [value]="time">
+        {{time}}
+      </ion-select-option>
     </ion-select>
   </ion-item>
 
   <ion-item>
     <ion-label>Time To:</ion-label>
-    <ion-select placeholder="Select" [(ngModel)]="filterTo">
-      <ion-select-option *ngFor="let time of timeSlots" [value]="time">{{time}}</ion-select-option>
+    <ion-select placeholder="Select" [(ngModel)]="filterTo" (ngModelChange)="filterTables()">
+      <ion-select-option *ngFor="let time of timeSlots"
+                         [disabled]="!!filterFrom && (time <= filterFrom)"
+                         [value]="time">
+        {{time}}
+      </ion-select-option>
     </ion-select>
   </ion-item>
 
@@ -44,7 +53,7 @@
         Results
       </ion-label>
     </ion-item-divider>
-    <ion-item *ngFor="let table of tables" (click)="reserveTable(table)">
+    <ion-item *ngFor="let table of filteredTables" (click)="reserveTable(table)">
       <ion-label>
         <h2>{{table.location}}</h2>
         <h3>Seats: {{table.seats}}</h3>

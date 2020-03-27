@@ -21,19 +21,28 @@
 
       <ion-item>
         <ion-label>Time From:</ion-label>
-        <ion-select placeholder="Select" [(ngModel)]="filterFrom">
-          <ion-select-option *ngFor="let time of timeSlots" [value]="time">{{time}}</ion-select-option>
+        <ion-select placeholder="Select" [(ngModel)]="timeFrom">
+          <ion-select-option *ngFor="let time of timeSlots"
+                             [disabled]="!!timeTo && (time >= timeTo)">
+            {{time}}
+          </ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label>Time To:</ion-label>
-        <ion-select placeholder="Select" [(ngModel)]="filterTo">
-          <ion-select-option *ngFor="let time of timeSlots" [value]="time">{{time}}</ion-select-option>
+        <ion-select placeholder="Select" [(ngModel)]="timeTo">
+          <ion-select-option *ngFor="let time of timeSlots"
+                             [disabled]="!!timeFrom && (time <= timeFrom)"
+                             [value]="time">
+            {{time}}
+          </ion-select-option>
         </ion-select>
       </ion-item>
 
-      <ion-button expand="block" color="secondary">Reserve</ion-button>
+      <ion-button expand="block" [disabled]="!isAvailable()" color="secondary" (click)="reserveTable()">
+        Reserve
+      </ion-button>
     </ion-card-content>
   </ion-card>
 

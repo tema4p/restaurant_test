@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {ITable} from '../models/ITable';
-import * as moment from 'moment';
+import {filter} from 'lodash';
 import {Router} from '@angular/router';
 import {ReserveService} from '../services/reserve.service';
+import {Observable} from 'rxjs';
+import {Store} from '@ngrx/store';
+import {GET_TABLES, ITableState} from '../models/table.reducer';
 
 @Component({
   selector: 'app-reserve-list',
@@ -16,42 +19,13 @@ export class ReserveListPage implements OnInit {
 
   public timeSlots: string[];
 
-  public tables: ITable[] = [{
-    id: 1,
-    seats: 2,
-    location: `King's throne`,
-    reserves: [{
-      timeFrom: '12:00',
-      timeTo: '14:00',
-    }, {
-      timeFrom: '15:00',
-      timeTo: '19:00',
-    }]
-  }, {
-    id: 2,
-    seats: 4,
-    location: `Close to the window`,
-    reserves: [{
-      timeFrom: '14:00',
-      timeTo: '18:00',
-    }, {
-      timeFrom: '20:00',
-      timeTo: '21:00',
-    }]
-  }, {
-    id: 3,
-    seats: 6,
-    location: `On the floor`,
-    reserves: [{
-      timeFrom: '11:00',
-      timeTo: '13:00',
-    }, {
-      timeFrom: '19:00',
-      timeTo: '20:00',
-    }]
-  }];
+  public state$: Observable<ITableState> = this.store.select(state => state.tables);
+  public fetchedTables: ITable[] = [];
+  public filteredTables: ITable[] = [];
+
 
   constructor(
+    private store: Store<{tables: ITableState}>,
     private router: Router,
     private reserveService: ReserveService
   ) {
@@ -59,6 +33,25 @@ export class ReserveListPage implements OnInit {
   }
 
   ngOnInit() {
+    this.store.dispatch({ type: GET_TABLES });
+
+    this.state$.subscribe((state: ITableState) => {
+      this.fetchedTables = state.tables;
+      this.filterTables();
+    });
+  }
+
+  filterTables() {
+    this.filteredTables = filter(this.fetchedTables, (table: ITable) => {
+      const matchSeats = this.filterSeats === '' || table.seats === +this.filterSeats;
+      let available = true;
+
+      if (this.filterFrom || this.filterTo) {
+        available = this.reserveService.checkTableAvailable(table, this.filterFrom, this.filterTo);
+      }
+
+      return matchSeats && available;
+    });
   }
 
   public reserveTable(table: ITable) {

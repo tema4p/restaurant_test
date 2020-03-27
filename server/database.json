@@ -1,0 +1,44 @@
+{
+  "tables": [{
+    "id": 1,
+    "seats": 2,
+    "location": "King's throne",
+    "reserves": [{
+      "timeFrom": "12:00",
+      "timeTo": "14:00"
+    }, {
+      "timeFrom": "15:00",
+      "timeTo": "19:00"
+    }]
+  }, {
+    "id": 2,
+    "seats": 4,
+    "location": "Close to the window",
+    "reserves": [{
+      "timeFrom": "14:00",
+      "timeTo": "18:00"
+    }, {
+      "timeFrom": "20:00",
+      "timeTo": "21:00"
+    }]
+  }, {
+    "id": 3,
+    "seats": 6,
+    "location": "On the floor",
+    "reserves": [{
+      "timeFrom": "11:00",
+      "timeTo": "13:00"
+    }, {
+      "timeFrom": "19:00",
+      "timeTo": "20:00"
+    }]
+  }, {
+    "id": 4,
+    "seats": 4,
+    "location": "Outside",
+    "reserves": [{
+      "timeFrom": "12:00",
+      "timeTo": "15:00"
+    }]
+  }]
+}
