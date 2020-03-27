@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Reserve Table</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-subtitle>{{table?.seats}} seats</ion-card-subtitle>
+      <ion-card-title>{{table?.location}}</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      Keep close to Nature's heart... and break clear away, once in awhile,
+      and climb a mountain or spend a week in the woods. Wash your spirit clean.
+
+      <ion-item>
+        <ion-label>Time From:</ion-label>
+        <ion-select placeholder="Select" [(ngModel)]="filterFrom">
+          <ion-select-option *ngFor="let time of timeSlots" [value]="time">{{time}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Time To:</ion-label>
+        <ion-select placeholder="Select" [(ngModel)]="filterTo">
+          <ion-select-option *ngFor="let time of timeSlots" [value]="time">{{time}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-button expand="block" color="secondary">Reserve</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>
